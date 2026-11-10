@@ -70,7 +70,7 @@ Show Lyrics 100 ms Earlier / Later, Toggle Follow Current Line, Switch Theme.
 npm install
 npm run check          # typecheck + unit tests (node --test, no extra deps)
 npm run build          # bundle to dist/ with esbuild
-npx @vscode/vsce package --no-rewrite-relative-links --allow-missing-repository
+npx @vscode/vsce package
 ```
 
 Press F5 in VS Code with this folder open to start an Extension Development Host.

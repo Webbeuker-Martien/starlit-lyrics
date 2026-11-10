@@ -3,8 +3,16 @@
   "displayName": "Starlit Lyrics",
   "description": "Synced Spotify lyrics in VS Code, with a Starry Night theme. A rebuild of Shuri.",
   "version": "0.1.0",
-  "publisher": "webbeukers",
+  "publisher": "MartienVogel",
   "license": "Unlicense",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Webbeuker-Martien/starlit-lyrics"
+  },
+  "bugs": {
+    "url": "https://github.com/Webbeuker-Martien/starlit-lyrics/issues"
+  },
+  "homepage": "https://github.com/Webbeuker-Martien/starlit-lyrics#readme",
   "engines": {
     "vscode": "^1.90.0"
   },
@@ -119,7 +127,7 @@
     "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test \"test/**/*.test.ts\"",
     "check": "npm run typecheck && npm test",
     "vscode:prepublish": "npm run check && node esbuild.mjs --production",
-    "package": "vsce package --no-rewrite-relative-links --allow-missing-repository"
+    "package": "vsce package"
   },
   "devDependencies": {
     "@types/node": "^20.17.0",

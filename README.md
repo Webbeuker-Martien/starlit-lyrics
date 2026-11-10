@@ -142,6 +142,7 @@ The Marketplace page updates within a few minutes, and installed copies update a
 | 401 or "unauthorized" | The token expired or has the wrong settings: make a new one and run `vsce login` again. |
 | "Git working directory not clean" | Commit your changes first (step 4). |
 | "version already exists" | Use `publish patch` instead of plain `publish`. |
+| `publish patch` raised the version but the Marketplace still shows the old one | The upload failed after the version bump. Run `npx @vscode/vsce publish` (no `patch`), so the version doesn't jump again. |
 | Changes don't show after installing a `.vsix` | Run **Developer: Reload Window**. |
 
 More detail, including creating a brand-new extension, is in

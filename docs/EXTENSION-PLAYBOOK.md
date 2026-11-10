@@ -170,4 +170,5 @@ git push --follow-tags                        # push code + version tag
 | "version already exists" | Use `publish patch` (or raise `version` by hand). |
 | "display name already taken" | Change `displayName` in `package.json`. |
 | README images broken on the Marketplace | `repository` is missing in `package.json`, or the repo is private or not pushed. |
+| `publish patch` raised the version but the Marketplace still shows the old one | The upload failed after the version bump. Run `npx @vscode/vsce publish` (no `patch`), so the version doesn't jump again. |
 | Changes don't show after installing a `.vsix` | Run **Developer: Reload Window** (Ctrl+Shift+P). |

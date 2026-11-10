@@ -15,6 +15,8 @@ export function renderHtml(webview: vscode.Webview, extensionUri: vscode.Uri): s
     `font-src ${webview.cspSource}`,
     `script-src 'nonce-${nonce}'`,
   ].join('; ');
+  // Start in the configured theme so there is no flash before the settings message arrives.
+  const theme = vscode.workspace.getConfiguration('starlit').get<string>('theme') === 'matchVsCode' ? 'matchVsCode' : 'starryNight';
 
   return `<!doctype html>
 <html lang="en">
@@ -25,7 +27,7 @@ export function renderHtml(webview: vscode.Webview, extensionUri: vscode.Uri): s
   <link rel="stylesheet" href="${media('main.css')}">
   <title>Starlit Lyrics</title>
 </head>
-<body data-theme="starryNight">
+<body data-theme="${theme}">
   <div id="sky" aria-hidden="true"></div>
   <header id="header" hidden></header>
   <div id="banner" role="status" hidden></div>

@@ -16,7 +16,7 @@
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  let settings = { theme: 'starryNight', offsetMs: 0, fontSize: 16, follow: true, redirectUri: '', clientId: '' };
+  let settings = { theme: document.body.dataset.theme || 'starryNight', offsetMs: 0, fontSize: 16, follow: true, redirectUri: '', clientId: '' };
   /** @type {any} */
   let view = { status: 'nothing' };
   /** @type {string | null} */

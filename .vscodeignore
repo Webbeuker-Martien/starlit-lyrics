@@ -1,6 +1,7 @@
 **
 !dist/extension.js
 !media/**
+!docs/screenshots/**
 !package.json
 !README.md
 !LICENSE

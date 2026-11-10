@@ -8,10 +8,10 @@ import type { Playback, PlaybackTick, ViewState } from '../core/types.ts';
 import { SpotifyAuthError, SpotifyPremiumError, SpotifyRateLimitError, getCurrentlyPlaying, seek } from '../spotify/api.ts';
 import { SpotifyAuth, redirectUri } from '../spotify/auth.ts';
 
-const POLL_PLAYING_MS = 4_000;
-const POLL_PAUSED_MS = 5_000;
+const POLL_PLAYING_MS = 3_000;
+const POLL_PAUSED_MS = 4_000;
 const POLL_IDLE_MS = 5_000;
-const POLL_UNFOCUSED_MS = 10_000;
+const POLL_UNFOCUSED_MS = 6_000;
 const MAX_BACKOFF_MS = 30_000;
 
 export interface Settings {
@@ -172,7 +172,8 @@ export class Controller implements vscode.Disposable {
     } finally {
       this.polling = false;
     }
-    if (!vscode.window.state.focused) next = Math.max(next, POLL_UNFOCUSED_MS);
+    // Slow down while VS Code is in the background, but keep the early poll at the end of a song.
+    if (!vscode.window.state.focused && next >= POLL_PLAYING_MS) next = Math.max(next, POLL_UNFOCUSED_MS);
     this.schedule(next);
   }
 

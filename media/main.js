@@ -102,7 +102,7 @@
         renderLoading();
         break;
       case 'none':
-        renderEmpty('☾', `No synced lyrics for “${next.track.title}”`, "LRClib doesn't have lyrics for this track yet.");
+        renderEmpty('☾', `No lyrics for “${next.track.title}”`, 'The words are lost among the stars. Hum along for now.');
         break;
       case 'instrumental':
         renderEmpty('✧', 'Instrumental', 'No words in this one. Enjoy the music.');

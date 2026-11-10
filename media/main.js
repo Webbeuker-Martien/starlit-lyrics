@@ -456,12 +456,27 @@
     scheduleShootingStar();
   }
 
+  const SHOOTING_SPEED_PX_S = 120;
+  const SHOOTING_TRAIL_PX = 170; // matches .shooting width in main.css
+
   function scheduleShootingStar() {
     shootingTimer = window.setTimeout(() => {
       if (settings.theme === 'starryNight' && !reducedMotion.matches && !document.hidden) {
         const s = el('span', 'shooting');
-        s.style.setProperty('left', (20 + Math.random() * 70).toFixed(1) + '%');
-        s.style.setProperty('top', (Math.random() * 35).toFixed(1) + '%');
+        const w = sky.clientWidth;
+        const h = sky.clientHeight;
+        const x = w * (0.2 + Math.random() * 0.75);
+        const y = h * Math.random() * 0.35;
+        // Fly down-left at 55° until the head and the whole trail have left the panel.
+        const dirX = -Math.cos((55 * Math.PI) / 180);
+        const dirY = Math.sin((55 * Math.PI) / 180);
+        const dist = Math.min(x / -dirX, (h - y) / dirY) + SHOOTING_TRAIL_PX;
+        const seconds = Math.max(1.2, dist / SHOOTING_SPEED_PX_S);
+        s.style.setProperty('left', x.toFixed(0) + 'px');
+        s.style.setProperty('top', y.toFixed(0) + 'px');
+        s.style.setProperty('--dx', (dirX * dist).toFixed(0) + 'px');
+        s.style.setProperty('--dy', (dirY * dist).toFixed(0) + 'px');
+        s.style.setProperty('--dur', seconds.toFixed(2) + 's');
         s.addEventListener('animationend', () => s.remove());
         sky.append(s);
       }

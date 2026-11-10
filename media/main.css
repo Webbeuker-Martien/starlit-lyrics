@@ -109,7 +109,7 @@ body {
   transform-origin: left center;
   rotate: -55deg;
   opacity: 0;
-  animation: shoot 3.2s linear forwards;
+  animation: shoot var(--dur, 3s) linear forwards;
 }
 
 .shooting::before {
@@ -134,19 +134,16 @@ body {
     translate: 0 0;
     scale: 0.15 1;
   }
-  8% {
+  5% {
     opacity: 1;
   }
-  35% {
+  20% {
     scale: 1 1;
   }
-  /* Fully bright until the very end of its path, then a quick fade. */
-  90% {
-    opacity: 1;
-  }
+  /* No fade at the end: the path (set per star in main.js) runs until it has left the panel. */
   100% {
-    opacity: 0;
-    translate: -126px 180px;
+    opacity: 1;
+    translate: var(--dx, -126px) var(--dy, 180px);
     scale: 1 1;
   }
 }

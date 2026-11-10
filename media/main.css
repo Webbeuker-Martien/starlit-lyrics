@@ -49,6 +49,11 @@ html,
 body {
   height: 100%;
   margin: 0;
+}
+
+/* VS Code injects `body { padding: 0 20px }` into every webview; the header must reach the edges. */
+html body {
+  padding: 0;
   overflow: hidden;
 }
 
@@ -348,14 +353,14 @@ body {
 }
 
 .note {
-  display: inline-block;
-  margin-bottom: 12px;
-  padding: 3px 10px;
-  border-radius: 999px;
-  font-size: 0.85em;
+  margin-bottom: 14px;
+  font-size: 0.8em;
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: var(--muted);
-  background: var(--card);
-  border: 1px solid var(--card-border);
+  opacity: 0.8;
 }
 
 /* ---------- Empty, loading and sign-in states ---------- */

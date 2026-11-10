@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1
+
+- New description: inspired by Shuri and the StarryNight theme from Spicetify.
+
 ## 0.1.0
 
 - First version: synced lyrics from LRClib for Spotify playback, Starry Night and Match VS Code

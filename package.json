@@ -1,0 +1,131 @@
+{
+  "name": "starlit-lyrics",
+  "displayName": "Starlit Lyrics",
+  "description": "Synced Spotify lyrics in VS Code, with a Starry Night theme. A rebuild of Shuri.",
+  "version": "0.1.0",
+  "publisher": "webbeukers",
+  "license": "Unlicense",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "spotify",
+    "lyrics",
+    "lrclib",
+    "music"
+  ],
+  "icon": "media/icon.png",
+  "main": "./dist/extension.js",
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "starlit.lyricsView",
+          "type": "webview",
+          "name": "Lyrics",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "starlit.openPanel",
+        "title": "Open Lyrics in Editor",
+        "category": "Starlit Lyrics"
+      },
+      {
+        "command": "starlit.signIn",
+        "title": "Sign in to Spotify",
+        "category": "Starlit Lyrics"
+      },
+      {
+        "command": "starlit.signOut",
+        "title": "Sign out of Spotify",
+        "category": "Starlit Lyrics"
+      },
+      {
+        "command": "starlit.offsetEarlier",
+        "title": "Show Lyrics 100 ms Earlier",
+        "category": "Starlit Lyrics"
+      },
+      {
+        "command": "starlit.offsetLater",
+        "title": "Show Lyrics 100 ms Later",
+        "category": "Starlit Lyrics"
+      },
+      {
+        "command": "starlit.toggleFollow",
+        "title": "Toggle Follow Current Line",
+        "category": "Starlit Lyrics"
+      },
+      {
+        "command": "starlit.toggleTheme",
+        "title": "Switch Theme (Match VS Code / Starry Night)",
+        "category": "Starlit Lyrics"
+      }
+    ],
+    "configuration": {
+      "title": "Starlit Lyrics",
+      "properties": {
+        "starlit.theme": {
+          "type": "string",
+          "enum": [
+            "matchVsCode",
+            "starryNight"
+          ],
+          "enumDescriptions": [
+            "Use your VS Code color theme.",
+            "Night-sky gradient with twinkling stars (StarryNight Spicetify colors)."
+          ],
+          "default": "starryNight",
+          "description": "Look of the lyrics view."
+        },
+        "starlit.lyricOffsetMs": {
+          "type": "number",
+          "default": 0,
+          "minimum": -5000,
+          "maximum": 5000,
+          "description": "Shift lyrics timing in milliseconds. Positive shows lines earlier, negative later."
+        },
+        "starlit.fontSize": {
+          "type": "number",
+          "default": 16,
+          "minimum": 10,
+          "maximum": 40,
+          "description": "Base font size of the lyrics in pixels."
+        },
+        "starlit.followCurrentLine": {
+          "type": "boolean",
+          "default": true,
+          "description": "Scroll automatically so the current line stays in view."
+        },
+        "starlit.port": {
+          "type": "number",
+          "default": 5566,
+          "minimum": 1024,
+          "maximum": 65535,
+          "description": "Local port for the Spotify sign-in callback. Your Spotify app needs the redirect URI http://127.0.0.1:<port>/callback."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "typecheck": "tsc --noEmit -p .",
+    "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test \"test/**/*.test.ts\"",
+    "check": "npm run typecheck && npm test",
+    "vscode:prepublish": "npm run check && node esbuild.mjs --production",
+    "package": "vsce package --no-rewrite-relative-links --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "@types/vscode": "~1.90.0",
+    "@vscode/vsce": "^4.1.0",
+    "esbuild": "^0.28.2",
+    "typescript": "~5.9.3"
+  }
+}

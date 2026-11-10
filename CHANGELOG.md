@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.4
+
+- Show Spotify's reason for seek failures instead of assuming Premium restrictions
+
 ## 0.1.3
 
 - Friendlier message when a song has no lyrics.

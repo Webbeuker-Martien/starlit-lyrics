@@ -255,10 +255,11 @@ export class Controller implements vscode.Disposable {
       this.broadcast({ type: 'tick', tick: this.lastTick });
       this.schedule(600);
     } catch (err) {
-      const premium = err instanceof SpotifyPremiumError;
-      vscode.window.showWarningMessage(
-        premium ? 'Seeking needs Spotify Premium.' : `Couldn't seek: ${err instanceof Error ? err.message : String(err)}`,
-      );
+      // A 403 here is usually not about Premium (e.g. "Restriction violated" on devices that block seeking),
+      // so show Spotify's own reason and only mention Premium when Spotify does.
+      const reason = err instanceof Error ? err.message : String(err);
+      const premium = err instanceof SpotifyPremiumError && /premium/i.test(reason);
+      vscode.window.showWarningMessage(premium ? 'Seeking needs Spotify Premium.' : `Couldn't seek: ${reason}`);
     }
   }
 

@@ -1,8 +1,8 @@
 # Starlit Lyrics
 
-Synced Spotify lyrics in VS Code, with a Starry Night theme. A from-scratch rebuild of
-[Shuri](https://marketplace.visualstudio.com/items?itemName=o-p.shuri) that fixes stale lyrics,
-the floating sync button and the plain styling.
+Synced Spotify lyrics in VS Code. Inspired by
+[Shuri](https://marketplace.visualstudio.com/items?itemName=o-p.shuri) and the StarryNight theme
+from [Spicetify](https://spicetify.app).
 
 <p>
   <img src="docs/screenshots/starry-synced.png" width="260" alt="Synced lyrics in the Starry Night theme">

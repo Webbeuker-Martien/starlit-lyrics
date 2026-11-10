@@ -1,7 +1,7 @@
 {
   "name": "starlit-lyrics",
   "displayName": "Starlit Lyrics",
-  "description": "Synced Spotify lyrics in VS Code, with a Starry Night theme. A rebuild of Shuri.",
+  "description": "Synced Spotify lyrics in VS Code. Inspired by Shuri and the StarryNight theme from Spicetify.",
   "version": "0.1.0",
   "publisher": "MartienVogel",
   "license": "Unlicense",

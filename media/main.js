@@ -140,10 +140,10 @@
     artist.title = track.album ? `${track.artists.join(', ')} · ${track.album}` : track.artists.join(', ');
     const badge = el('span', 'badge', 'Paused');
     badge.hidden = true;
-    meta.append(title, artist, badge);
+    meta.append(title, artist);
     const progress = el('div', 'progress');
     progress.append(el('div', 'progress-fill'));
-    header.append(art, meta, progress);
+    header.append(art, meta, badge, progress);
     updatePlayingUi();
   }
 

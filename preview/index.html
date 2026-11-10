@@ -1,0 +1,99 @@
+<!doctype html>
+<!-- Dev-only harness: renders the real webview (media/main.js + main.css) in a browser with a fake
+     VS Code API, for screenshots and visual checks. Usage: index.html?state=synced&theme=starryNight
+     Extra: &away=1 simulates the user scrolling away; &paused=1; &width=... is set by the browser window. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Starlit Lyrics preview</title>
+  <style>
+    /* A subset of VS Code Dark Modern variables, so "matchVsCode" looks realistic. */
+    :root {
+      --vscode-font-family: 'Segoe UI', system-ui, sans-serif;
+      --vscode-font-size: 13px;
+      --vscode-editor-font-family: Consolas, monospace;
+      --vscode-foreground: #cccccc;
+      --vscode-editor-foreground: #e6e6e6;
+      --vscode-descriptionForeground: #9d9d9d;
+      --vscode-textLink-foreground: #4daafc;
+      --vscode-editorWidget-background: #202020;
+      --vscode-widget-border: #313131;
+      --vscode-button-background: #0078d4;
+      --vscode-button-foreground: #ffffff;
+      --vscode-button-hoverBackground: #026ec1;
+      --vscode-input-background: #313131;
+      --vscode-input-foreground: #cccccc;
+      --vscode-input-border: #3c3c3c;
+      --vscode-focusBorder: #0078d4;
+      --vscode-sideBar-background: #181818;
+    }
+    html { background: #181818; }
+  </style>
+  <link rel="stylesheet" href="../media/main.css">
+</head>
+<body data-theme="starryNight">
+  <div id="sky" aria-hidden="true"></div>
+  <header id="header" hidden></header>
+  <div id="banner" role="status" hidden></div>
+  <main id="scroller" tabindex="0"><div id="content"></div></main>
+  <button id="pill" type="button" class="pill" aria-label="Back to current line" hidden>
+    <span class="pill-arrow" aria-hidden="true"></span><span>Back to current line</span>
+  </button>
+  <script>
+    const q = new URLSearchParams(location.search);
+    window.acquireVsCodeApi = () => ({ postMessage: (m) => console.log('to host', JSON.stringify(m)) });
+
+    // Made-up lyrics (not from a real song).
+    const words = [
+      'Streetlights hum a quiet tune', 'Painted silver by the moon', '',
+      'We count the stars along the way', 'Every one a word we never say',
+      'Hold the night a little longer', 'Let the dark make us stronger', '',
+      'Oh, the sky is wide awake', 'Shining for the both of us', 'Every turn the road will take',
+      'Leads me back to you', '', 'Engines low and windows down', 'Cassette tapes and a sleeping town',
+      'Keep the radio on loud', 'Underneath a velvet cloud', 'Oh, the sky is wide awake',
+      'Shining for the both of us', 'Every turn the road will take', 'Leads me back to you',
+    ];
+    const lines = words.map((text, i) => ({ timeMs: 8000 + i * 3500, text }));
+    // One line with word timing, to show the enhanced highlight.
+    const ACTIVE = 9;
+    lines[ACTIVE].words = ['Shining ', 'for ', 'the ', 'both ', 'of ', 'us'].map((w, j) => ({ timeMs: lines[ACTIVE].timeMs + j * 450, text: w }));
+
+    const art = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128">
+      <defs><radialGradient id="g" cx="35%" cy="30%"><stop offset="0" stop-color="#ffd27a"/><stop offset=".45" stop-color="#d9577a"/><stop offset="1" stop-color="#2a1b5c"/></radialGradient></defs>
+      <rect width="128" height="128" fill="url(#g)"/><circle cx="92" cy="40" r="10" fill="#fff3c4"/></svg>`);
+    const track = { id: 't1', kind: 'track', title: 'Wide Awake Sky', artists: ['The Night Owls'], album: 'Velvet Cloud', durationMs: 120000, artUrl: art };
+
+    const status = q.get('state') || 'synced';
+    const views = {
+      synced: { status: 'synced', track, lines, hasWordTiming: true },
+      plain: { status: 'plain', track, lines: words.slice(0, 12) },
+      none: { status: 'none', track: { ...track, id: 't2', title: 'Silent Overture' } },
+      instrumental: { status: 'instrumental', track },
+      loading: { status: 'loading', track },
+      podcast: { status: 'podcast', track: { ...track, kind: 'episode', title: 'Episode 42: Night Skies', artists: ['Stargazers Weekly'] } },
+      nothing: { status: 'nothing' },
+      ad: { status: 'ad' },
+      signedOut: { status: 'signedOut' },
+      error: { status: 'error', track, message: 'LRClib rate limit reached. Retrying shortly.' },
+    };
+
+    const post = (data) => window.postMessage(data, '*');
+    window.addEventListener('load', () => {
+      post({ type: 'settings', settings: { theme: q.get('theme') || 'starryNight', offsetMs: 0, fontSize: 16, follow: true, redirectUri: 'http://127.0.0.1:5566/callback', clientId: '' } });
+      post({ type: 'view', view: views[status] });
+      const pos = lines[ACTIVE].timeMs + 1500;
+      post({ type: 'tick', tick: { trackId: views[status].track?.id ?? null, isPlaying: !q.get('paused'), progressMs: pos, sampledAt: Date.now(), durationMs: 120000 } });
+      if (q.get('banner')) post({ type: 'banner', message: q.get('banner') });
+      if (q.get('away')) {
+        setTimeout(() => {
+          const s = document.getElementById('scroller');
+          s.dispatchEvent(new WheelEvent('wheel', { deltaY: -400 }));
+          s.scrollTop = 0;
+        }, 900);
+      }
+    });
+  </script>
+  <script src="../media/main.js"></script>
+</body>
+</html>

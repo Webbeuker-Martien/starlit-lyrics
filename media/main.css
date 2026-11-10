@@ -243,6 +243,8 @@ body {
   overflow-x: hidden;
   outline: none;
   scrollbar-width: thin;
+  /* Lines fade in and out at the edges instead of being cut off. */
+  mask-image: linear-gradient(to bottom, transparent 0, #000 22px, #000 calc(100% - 28px), transparent 100%);
 }
 
 #content {
@@ -292,8 +294,9 @@ body {
   color: var(--fg-strong);
   transform: scale(1.14);
   text-shadow:
-    0 0 10px var(--glow),
-    0 0 22px color-mix(in srgb, var(--glow) 50%, transparent);
+    0 0 8px var(--glow),
+    0 0 18px var(--glow),
+    0 0 32px color-mix(in srgb, var(--glow) 60%, transparent);
   width: 87.7%; /* 1 / 1.14: keeps the scaled line inside the panel */
 }
 

@@ -111,7 +111,7 @@
         renderError(next.message);
         break;
       case 'plain':
-        renderPlain(next.lines);
+        renderPlain(next.track.title, next.lines);
         break;
       case 'synced':
         renderSynced(next.lines);
@@ -173,8 +173,8 @@
     content.append(box);
   }
 
-  function renderPlain(plain) {
-    content.append(el('div', 'note', 'Not synced: showing plain lyrics'));
+  function renderPlain(title, plain) {
+    content.append(el('div', 'note', `No synced lyrics for “${title}”. Showing plain lyrics.`));
     const box = el('div', 'lines plain');
     for (const text of plain) {
       box.append(text ? el('div', 'line', text) : el('div', 'stanza'));

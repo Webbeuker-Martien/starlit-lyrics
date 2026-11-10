@@ -2,7 +2,7 @@
 
 ## 0.1.2
 
-- Shooting stars now look like the StarryNight Spicetify theme: a glowing point with a fading trail.
+- Shooting stars now look like the StarryNight Spicetify theme: a glowing point with a fading trail, drifting slowly.
 
 ## 0.1.1
 

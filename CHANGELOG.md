@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2
+
+- Shooting stars now look like the StarryNight Spicetify theme: a glowing point with a fading trail.
+
 ## 0.1.1
 
 - New description: inspired by Shuri and the StarryNight theme from Spicetify.

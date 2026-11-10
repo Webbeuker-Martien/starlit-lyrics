@@ -64,16 +64,90 @@ from [Spicetify](https://spicetify.app).
 Commands (prefix *Starlit Lyrics:*): Open Lyrics in Editor, Sign in to Spotify, Sign out of Spotify,
 Show Lyrics 100 ms Earlier / Later, Toggle Follow Current Line, Switch Theme.
 
-## Development
+## Development and releases
+
+The full flow, from a fresh clone to a published release. You need [Node.js](https://nodejs.org)
+(LTS), [Git](https://git-scm.com) and VS Code.
+
+### 1. Clone and install
 
 ```sh
+git clone https://github.com/Webbeuker-Martien/starlit-lyrics.git
+cd starlit-lyrics
 npm install
-npm run check          # typecheck + unit tests (node --test, no extra deps)
-npm run build          # bundle to dist/ with esbuild
-npx @vscode/vsce package
 ```
 
-Press F5 in VS Code with this folder open to start an Extension Development Host.
+### 2. Make and test changes
+
+1. Open the folder in VS Code and press **F5**. A second window (the Extension Development Host)
+   runs your version of the extension. After editing, press **Ctrl+R** in that window to reload.
+2. To check the panel's look without Spotify, open `preview/index.html?state=synced` in Chrome.
+   Other states: `none`, `plain`, `loading`, `signedOut`, `instrumental`, `podcast`, `ad`, `nothing`,
+   `error`. You can add `&theme=matchVsCode`, `&paused=1` or `&away=1`.
+3. Run the type check and unit tests:
+
+   ```sh
+   npm run check
+   ```
+
+### 3. Try the real package
+
+```sh
+npx @vscode/vsce package
+code --install-extension starlit-lyrics-<version>.vsix --force
+```
+
+Then run **Developer: Reload Window** (Ctrl+Shift+P) in your normal VS Code.
+
+### 4. Commit
+
+1. Add a section at the top of `CHANGELOG.md` for the next version, e.g. `## 0.1.2`, with one line
+   per change.
+2. Commit everything:
+
+   ```sh
+   git add -A
+   git commit -m "Describe the change"
+   ```
+
+### 5. Publish the release
+
+One-time setup per PC (skip if done): log in with a Marketplace personal access token. Create it at
+dev.azure.com → User settings → Personal access tokens, with **Organization: All accessible
+organizations** and scope **Marketplace → Manage**.
+
+```sh
+npx @vscode/vsce login MartienVogel
+```
+
+Then publish, choosing the version bump that fits the change:
+
+```sh
+npx @vscode/vsce publish patch     # bug fix or small tweak:   0.1.1 → 0.1.2
+npx @vscode/vsce publish minor     # new feature or setting:   0.1.2 → 0.2.0
+npx @vscode/vsce publish major     # big or breaking change:   0.2.0 → 1.0.0
+```
+
+This raises `version` in `package.json` and commits it with a `v<version>` tag. Then it runs the
+checks and the production build, and uploads. Finally, push the code and the tag:
+
+```sh
+git push --follow-tags
+```
+
+The Marketplace page updates within a few minutes, and installed copies update automatically.
+
+| Problem | Fix |
+| --- | --- |
+| 401 or "unauthorized" | The token expired or has the wrong settings: make a new one and run `vsce login` again. |
+| "Git working directory not clean" | Commit your changes first (step 4). |
+| "version already exists" | Use `publish patch` instead of plain `publish`. |
+| Changes don't show after installing a `.vsix` | Run **Developer: Reload Window**. |
+
+More detail, including creating a brand-new extension, is in
+[docs/EXTENSION-PLAYBOOK.md](docs/EXTENSION-PLAYBOOK.md).
+
+### Project layout
 
 - `src/core/` holds pure logic with unit tests: LRC parser, LRClib client, the track-change session
   with its stale-fetch guard, and the Spotify response mapper.
